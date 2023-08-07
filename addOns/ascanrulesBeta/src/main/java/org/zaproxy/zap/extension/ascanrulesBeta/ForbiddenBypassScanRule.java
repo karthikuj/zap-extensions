@@ -141,6 +141,23 @@ public class ForbiddenBypassScanRule extends AbstractAppPlugin {
         for (String header : headerPayloads) {
             String tmpUri = schema + "://" + host;
 
+            // Before using legacy header path payloads we need to check if server actually
+            // supports them to reduce false positives
+            if (headerPayload[1].contains(path)) {
+
+                HttpMessage serverSupportsLegacyHeaders = getBaseMsg().cloneRequest();
+
+                serverSupportsLegacyHeaders
+                        .getRequestHeader()
+                        .setHeader(headerPayload[0], "/thisPathDefinitelyDoesNotExist");
+                sendAndReceive(serverSupportsLegacyHeaders);
+
+                if (serverSupportsLegacyHeaders.getResponseHeader().getStatusCode()
+                        != HttpStatusCode.NOT_FOUND) {
+                    continue;
+                }
+            }
+
             if (header.contains(HttpFieldsNames.X_REWRITE_URL)
                     || header.contains(HttpFieldsNames.REFERER)) {
                 tmpUri = tmpUri + "/anything";
