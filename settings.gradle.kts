@@ -77,6 +77,7 @@ var addOns = listOf(
     "packpentester",
     "packscanrules",
     "paramdigger",
+    "playwright",
     "plugnhack",
     "portscan",
     "postman",
