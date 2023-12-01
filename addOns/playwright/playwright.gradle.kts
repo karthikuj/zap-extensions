@@ -1,11 +1,7 @@
-import org.zaproxy.gradle.addon.AddOnPlugin
 import org.zaproxy.gradle.addon.AddOnStatus
 
 version = "0.0.1"
 description = "Run playwright tests in ZAP"
-
-val playwright by configurations.creating
-configurations.api { extendsFrom(playwright) }
 
 zapAddOn {
     addOnName.set("Playwright")
@@ -22,10 +18,6 @@ zapAddOn {
                 }
             }
         }
-
-        bundledLibs {
-            libs.from(playwright)
-        }
     }
 }
 
@@ -37,23 +29,9 @@ crowdin {
     }
 }
 
-tasks.named(AddOnPlugin.GENERATE_MANIFEST_TASK_NAME) {
-    dependsOn(tasks.withType<JavaExec>())
-}
-
-tasks {
-
-    register<JavaExec>("installDrivers") {
-        classpath(sourceSets["test"].runtimeClasspath)
-        mainClass.set("org.zaproxy.addon.playwright.InstallDrivers")
-    }
-}
-
 dependencies {
     var playwrightVersion = "1.40.0"
-    playwright("com.microsoft.playwright:playwright:$playwrightVersion")
-    var playwrightDriverBundleVersion = "1.40.0"
-    playwright("com.microsoft.playwright:playwright:$playwrightDriverBundleVersion")
+    implementation("com.microsoft.playwright:playwright:$playwrightVersion")
     implementation(libs.log4j.slf4j) {
         // Provided by ZAP.
         exclude(group = "org.apache.logging.log4j")
