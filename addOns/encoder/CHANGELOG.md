@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 
+## [1.4.0] - 2023-10-12
+### Changed
+- Update minimum ZAP version to 2.14.0.
+
+## [1.3.0] - 2023-09-08
+### Changed
+- Maintenance changes.
+
+### Fixed
+- Do not rely on the default charset in Full URL and ASCII Hex encoders/decoders.
+
 ## [1.2.0] - 2023-07-11
 ### Changed
 - Update minimum ZAP version to 2.13.0.
@@ -85,6 +96,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First version.
 
+[1.4.0]: https://github.com/zaproxy/zap-extensions/releases/encoder-v1.4.0
+[1.3.0]: https://github.com/zaproxy/zap-extensions/releases/encoder-v1.3.0
 [1.2.0]: https://github.com/zaproxy/zap-extensions/releases/encoder-v1.2.0
 [1.1.0]: https://github.com/zaproxy/zap-extensions/releases/encoder-v1.1.0
 [1.0.0]: https://github.com/zaproxy/zap-extensions/releases/encoder-v1.0.0

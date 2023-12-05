@@ -17,8 +17,9 @@ zapAddOn {
                 dependencies {
                     addOns {
                         register("automation") {
-                            version.set(">=0.24.0")
+                            version.set(">=0.31.0")
                         }
+                        register("commonlib")
                     }
                 }
             }
@@ -39,8 +40,8 @@ spotless {
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("automation")!!)
+    zapAddOn("automation")
+    zapAddOn("commonlib")
+
     testImplementation(project(":testutils"))
-    testImplementation(parent!!.childProjects.get("automation")!!)
-    testImplementation("org.snakeyaml:snakeyaml-engine:2.3")
 }

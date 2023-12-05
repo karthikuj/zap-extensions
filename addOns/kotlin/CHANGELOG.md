@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
-- Update minimum ZAP version to 2.13.0.
+- Update minimum ZAP version to 2.14.0.
+
+### Added
+- Script template: encode-decode-template.kts, for the Encoder (encode/decode/hash) add-on (Issue 5996).
 
 ## [1.1.0] - 2021-10-07
 ### Changed

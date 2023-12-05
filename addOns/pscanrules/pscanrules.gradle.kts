@@ -13,7 +13,7 @@ zapAddOn {
         dependencies {
             addOns {
                 register("commonlib") {
-                    version.set(">= 1.13.0 & < 2.0.0")
+                    version.set(">= 1.17.0 & < 2.0.0")
                 }
             }
         }
@@ -36,16 +36,13 @@ zapAddOn {
 }
 
 dependencies {
-    implementation("com.google.re2j:re2j:1.6")
+    implementation("com.google.re2j:re2j:1.7")
     implementation("com.shapesecurity:salvation2:3.0.1")
 
-    compileOnly(parent!!.childProjects.get("commonlib")!!)
-    compileOnly(parent!!.childProjects.get("custompayloads")!!)
+    zapAddOn("commonlib")
+    zapAddOn("custompayloads")
 
-    testImplementation(parent!!.childProjects.get("commonlib")!!)
-    testImplementation(parent!!.childProjects.get("custompayloads")!!)
     testImplementation(project(":testutils"))
-    testImplementation("org.apache.commons:commons-lang3:3.12.0")
 }
 
 spotless {

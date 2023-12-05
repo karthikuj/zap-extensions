@@ -10,23 +10,19 @@ zapAddOn {
         dependencies {
             addOns {
                 register("commonlib") {
-                    version.set(">= 1.13.0 & < 2.0.0")
-                }
-                register("oast") {
-                    version.set(">= 0.14.0")
+                    version.set(">= 1.20.0 & < 2.0.0")
                 }
             }
         }
     }
 }
 
-dependencies {
-    compileOnly(parent!!.childProjects.get("commonlib")!!)
-    compileOnly(parent!!.childProjects.get("oast")!!)
+tasks.named("compileJava") {
+    mustRunAfter(parent!!.childProjects.get("oast")!!.tasks.named("enhance"))
+}
 
-    testImplementation(parent!!.childProjects.get("commonlib")!!)
-    testImplementation(parent!!.childProjects.get("database")!!)
-    testImplementation(parent!!.childProjects.get("network")!!)
-    testImplementation(parent!!.childProjects.get("oast")!!)
+dependencies {
+    zapAddOn("commonlib")
+
     testImplementation(project(":testutils"))
 }

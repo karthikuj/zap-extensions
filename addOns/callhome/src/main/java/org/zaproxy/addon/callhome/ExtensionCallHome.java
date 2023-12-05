@@ -286,11 +286,15 @@ public class ExtensionCallHome extends ExtensionAdaptor
                     || key.startsWith("soap.")
                     || key.startsWith("spiderAjax.")
                     || key.startsWith("stats.alertFilter")
+                    || key.startsWith("stats.api.")
                     || key.startsWith("stats.ascan.")
                     || key.startsWith("stats.auth.")
                     || key.startsWith("stats.auto.")
                     || key.startsWith("stats.break.")
+                    || key.startsWith("stats.client.")
                     || key.startsWith("stats.code.")
+                    || key.startsWith("stats.config.")
+                    || key.startsWith("stats.error.")
                     || key.startsWith("stats.exim.")
                     || key.startsWith("stats.fuzz.")
                     || key.startsWith("stats.graphql.")
@@ -314,8 +318,10 @@ public class ExtensionCallHome extends ExtensionAdaptor
                             data.put("teltype", "add-ons");
                             addExtendedData(data);
                             // Add the add-on summary details
-                            ExtensionFactory.getAddOnLoader().getAddOnCollection()
-                                    .getInstalledAddOns().stream()
+                            ExtensionFactory.getAddOnLoader()
+                                    .getAddOnCollection()
+                                    .getInstalledAddOns()
+                                    .stream()
                                     .forEach(
                                             oe -> data.put(oe.getId(), oe.getVersion().toString()));
 

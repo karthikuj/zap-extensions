@@ -4,7 +4,34 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Changed
+- Dependency updates.
 
+### Fixed
+- Addressed warnings caused by Risk and Confidence HTML template.
+
+## [0.26.0] - 2023-10-12
+### Changed
+- Update minimum ZAP version to 2.14.0.
+
+## [0.25.0] - 2023-10-04
+### Changed
+- Depend on newer versions of Automation Framework and Common Library add-ons (Related to Issue 7961).
+- Update JavaDoc links to always link to latest version of ZAP.
+
+### Fixed
+- Fix error when generating the High Level Report Sample with an alert that has an empty description (Issue 8071).
+
+## [0.24.0] - 2023-08-17
+### Changed
+- Maintenance changes.
+- The following reports now include "Other Info" for alerts:
+    - Traditional HTML Report
+    - Traditional HTML Report with requests and responses
+    - Traditional Markdown Report
+    - Traditional PDF Report
+- Depend on Common Library add-on to reuse libraries (Issue 7961).
+- Update program name in reports.
 
 ## [0.23.0] - 2023-07-11
 ### Changed
@@ -219,6 +246,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First version.
 
+[0.26.0]: https://github.com/zaproxy/zap-extensions/releases/reports-v0.26.0
+[0.25.0]: https://github.com/zaproxy/zap-extensions/releases/reports-v0.25.0
+[0.24.0]: https://github.com/zaproxy/zap-extensions/releases/reports-v0.24.0
 [0.23.0]: https://github.com/zaproxy/zap-extensions/releases/reports-v0.23.0
 [0.22.0]: https://github.com/zaproxy/zap-extensions/releases/reports-v0.22.0
 [0.21.0]: https://github.com/zaproxy/zap-extensions/releases/reports-v0.21.0

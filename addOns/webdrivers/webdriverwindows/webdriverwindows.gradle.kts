@@ -1,3 +1,4 @@
+import org.zaproxy.gradle.addon.AddOnPlugin
 import org.zaproxy.gradle.addon.AddOnStatus
 import org.zaproxy.gradle.tasks.DownloadWebDriver
 
@@ -19,10 +20,19 @@ zapAddOn {
     }
 }
 
+tasks.named(AddOnPlugin.GENERATE_MANIFEST_TASK_NAME) {
+    dependsOn(tasks.withType<DownloadWebDriver>())
+}
+
 tasks {
-    register<DownloadWebDriver>("downloadChromeDriver") {
+    register<DownloadWebDriver>("downloadChromeDriverX32") {
         browser.set(DownloadWebDriver.Browser.CHROME)
         arch.set(DownloadWebDriver.Arch.X32)
+    }
+
+    register<DownloadWebDriver>("downloadChromeDriverX64") {
+        browser.set(DownloadWebDriver.Browser.CHROME)
+        arch.set(DownloadWebDriver.Arch.X64)
     }
 
     register<DownloadWebDriver>("downloadGeckodriverX32") {

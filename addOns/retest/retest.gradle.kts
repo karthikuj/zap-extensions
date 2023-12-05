@@ -9,7 +9,10 @@ zapAddOn {
         dependencies {
             addOns {
                 register("automation") {
-                    version.set(">=0.20.0")
+                    version.set(">=0.31.0")
+                }
+                register("commonlib") {
+                    version.set(">= 1.17.0 & < 2.0.0")
                 }
             }
         }
@@ -30,7 +33,8 @@ crowdin {
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("automation")!!)
-    testImplementation(parent!!.childProjects.get("automation")!!)
+    zapAddOn("automation")
+    zapAddOn("commonlib")
+
     testImplementation(project(":testutils"))
 }

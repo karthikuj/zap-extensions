@@ -6,6 +6,57 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 
+## [65] - 2023-11-01
+### Changed
+- Update ChromeDriver to 119.0.6045.105.
+
+
+
+## [64] - 2023-10-12
+### Changed
+- Update ChromeDriver to 118.0.5993.70.
+- Update minimum ZAP version to 2.14.0.
+
+## [63] - 2023-10-09
+### Changed
+- Update ChromeDriver to 117.0.5938.149.
+
+
+
+## [62] - 2023-09-22
+### Changed
+- Update ChromeDriver to 117.0.5938.92.
+
+
+
+## [61] - 2023-09-19
+### Added
+- ChromeDriver for x64 arch.
+
+## [60] - 2023-09-18
+### Changed
+- Update ChromeDriver to 117.0.5938.88.
+
+
+
+## [59] - 2023-09-13
+### Changed
+- Update ChromeDriver to 117.0.5938.62.
+
+
+
+## [58] - 2023-08-16
+### Changed
+- Update ChromeDriver to 116.0.5845.96.
+
+
+
+## [57] - 2023-08-09
+### Changed
+- Update ChromeDriver to 115.0.5790.170.
+
+
+
 ## [56] - 2023-07-11
 ### Changed
 - Update minimum ZAP version to 2.13.0.
@@ -254,6 +305,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First release: Firefox v0.13.0 Chrome v2.27 IE 3.0.0
 
+[65]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v65
+[64]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v64
+[63]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v63
+[62]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v62
+[61]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v61
+[60]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v60
+[59]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v59
+[58]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v58
+[57]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v57
 [56]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v56
 [55]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v55
 [54]: https://github.com/zaproxy/zap-extensions/releases/webdriverwindows-v54

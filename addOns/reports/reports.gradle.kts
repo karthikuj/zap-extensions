@@ -14,6 +14,15 @@ zapAddOn {
     manifest {
         author.set("ZAP Dev Team")
         url.set("https://www.zaproxy.org/docs/desktop/addons/report-generation/")
+
+        dependencies {
+            addOns {
+                register("commonlib") {
+                    version.set(">= 1.17.0 & < 2.0.0")
+                }
+            }
+        }
+
         extensions {
             register("org.zaproxy.addon.reports.automation.ExtensionReportAutomation") {
                 classnames {
@@ -22,7 +31,7 @@ zapAddOn {
                 dependencies {
                     addOns {
                         register("automation") {
-                            version.set(">=0.24.0")
+                            version.set(">=0.31.0")
                         }
                     }
                 }
@@ -45,19 +54,18 @@ crowdin {
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("automation")!!)
-    implementation("org.thymeleaf:thymeleaf:3.1.1.RELEASE")
-    implementation("org.xhtmlrenderer:flying-saucer-pdf:9.1.22")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
-    implementation("org.snakeyaml:snakeyaml-engine:2.6")
+    zapAddOn("automation")
+    zapAddOn("commonlib")
+
+    implementation("org.thymeleaf:thymeleaf:3.1.2.RELEASE")
+    implementation("org.xhtmlrenderer:flying-saucer-pdf:9.3.1")
     implementation(libs.log4j.slf4j2) {
         // Provided by ZAP.
         exclude(group = "org.apache.logging.log4j")
     }
 
-    testImplementation(parent!!.childProjects.get("automation")!!)
     testImplementation(project(":testutils"))
+    testImplementation(libs.log4j.core)
 }
 
 spotless {

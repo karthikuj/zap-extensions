@@ -22,22 +22,31 @@ zapAddOn {
         url.set("https://www.zaproxy.org/docs/desktop/addons/zest/")
         dependencies {
             addOns {
+                register("commonlib") {
+                    version.set(">=1.16.0")
+                }
                 register("network") {
                     version.set(">=0.2.0")
+                }
+                register("scripts") {
+                    version.set(">=44")
                 }
                 register("selenium") {
                     version.set(">= 15.13.0")
                 }
-                register("scripts")
             }
         }
     }
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("network")!!)
-    compileOnly(parent!!.childProjects.get("selenium")!!)
-    implementation("org.zaproxy:zest:0.18.0") {
+    zapAddOn("commonlib")
+    zapAddOn("network")
+    zapAddOn("selenium")
+
+    implementation("org.zaproxy:zest:0.20.0") {
+        // Provided by commonlib add-on.
+        exclude(group = "com.fasterxml.jackson")
         // Provided by Selenium add-on.
         exclude(group = "org.seleniumhq.selenium")
         // Provided by ZAP.
@@ -49,6 +58,4 @@ dependencies {
     }
 
     testImplementation(project(":testutils"))
-    testImplementation(parent!!.childProjects.get("network")!!)
-    testImplementation(parent!!.childProjects.get("selenium")!!)
 }

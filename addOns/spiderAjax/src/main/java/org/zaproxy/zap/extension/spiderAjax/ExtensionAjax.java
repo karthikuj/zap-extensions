@@ -51,6 +51,7 @@ import org.zaproxy.addon.network.ExtensionNetwork;
 import org.zaproxy.zap.extension.help.ExtensionHelp;
 import org.zaproxy.zap.extension.selenium.ExtensionSelenium;
 import org.zaproxy.zap.extension.spiderAjax.internal.ContextDataManager;
+import org.zaproxy.zap.extension.spiderAjax.internal.PopupMenuItemSpiderDialogWithContext;
 import org.zaproxy.zap.model.Context;
 import org.zaproxy.zap.model.Target;
 import org.zaproxy.zap.utils.DisplayUtils;
@@ -84,6 +85,8 @@ public class ExtensionAjax extends ExtensionAdaptor {
 
     private ContextDataManager contextDataManager;
     private List<AuthenticationHandler> authHandlers = new ArrayList<>();
+
+    private ImageIcon icon;
 
     /**
      * initializes the extension
@@ -157,6 +160,9 @@ public class ExtensionAjax extends ExtensionAdaptor {
             extensionHook.getHookView().addStatusPanel(getSpiderPanel());
             extensionHook.getHookView().addOptionPanel(getOptionsSpiderPanel());
             extensionHook.getHookMenu().addPopupMenuItem(getPopupMenuAjaxSite());
+            extensionHook
+                    .getHookMenu()
+                    .addPopupMenuItem(new PopupMenuItemSpiderDialogWithContext(this));
             extensionHook.getHookMenu().addToolsMenuItem(getMenuItemCustomScan());
             ExtensionHelp.enableHelpKey(getSpiderPanel(), "addon.spiderajax.tab");
         }
@@ -230,10 +236,25 @@ public class ExtensionAjax extends ExtensionAdaptor {
         if (spiderPanel == null) {
             spiderPanel = new SpiderPanel(this);
             spiderPanel.setName(this.getMessages().getString("spiderajax.panel.title"));
-            spiderPanel.setIcon(
-                    new ImageIcon(getClass().getResource("/resource/icon/16/spiderAjax.png")));
+            spiderPanel.setIcon(getIcon());
         }
         return spiderPanel;
+    }
+
+    /**
+     * Gets the icon for the AJAX spider related functionality.
+     *
+     * <p>Should not be called if there's no view.
+     *
+     * @return the icon, never {@code null}.
+     */
+    public ImageIcon getIcon() {
+        if (icon == null) {
+            icon =
+                    DisplayUtils.getScaledIcon(
+                            getClass().getResource("/resource/icon/16/spiderAjax.png"));
+        }
+        return icon;
     }
 
     public AjaxSpiderParam getAjaxSpiderParam() {
@@ -243,7 +264,9 @@ public class ExtensionAjax extends ExtensionAdaptor {
         return ajaxSpiderParam;
     }
 
-    /** @return the PopupMenuAjaxSite object */
+    /**
+     * @return the PopupMenuAjaxSite object
+     */
     private PopupMenuAjaxSite getPopupMenuAjaxSite() {
         if (popupMenuSpiderSite == null) {
             popupMenuSpiderSite =
@@ -262,13 +285,16 @@ public class ExtensionAjax extends ExtensionAdaptor {
                                     .getMenuShortcutKeyStroke(
                                             KeyEvent.VK_X, KeyEvent.ALT_DOWN_MASK, false));
             menuItemCustomScan.setEnabled(Control.getSingleton().getMode() != Mode.safe);
+            menuItemCustomScan.setIcon(getIcon());
 
-            menuItemCustomScan.addActionListener(e -> showScanDialog(null));
+            menuItemCustomScan.addActionListener(e -> showScanDialog((Target) null));
         }
         return menuItemCustomScan;
     }
 
-    /** @return */
+    /**
+     * @return
+     */
     private OptionsAjaxSpider getOptionsSpiderPanel() {
         if (optionsAjaxSpider == null) {
             ExtensionSelenium extSelenium =
@@ -283,15 +309,19 @@ public class ExtensionAjax extends ExtensionAdaptor {
     }
 
     public void showScanDialog(SiteNode node) {
+        showScanDialog(node == null ? null : new Target(node));
+    }
+
+    public void showScanDialog(Target target) {
         if (spiderDialog == null) {
             spiderDialog =
                     new AjaxSpiderDialog(
                             this,
                             View.getSingleton().getMainFrame(),
                             DisplayUtils.getScaledDimension(700, 500));
-            spiderDialog.init(new Target(node));
-        } else if (node != null) {
-            spiderDialog.init(new Target(node));
+            spiderDialog.init(target);
+        } else if (target != null) {
+            spiderDialog.init(target);
         } else {
             spiderDialog.updateBrowsers();
         }
@@ -433,17 +463,23 @@ public class ExtensionAjax extends ExtensionAdaptor {
         return null;
     }
 
-    /** @param ignoredRegexs */
+    /**
+     * @param ignoredRegexs
+     */
     public void setExcludeList(List<String> ignoredRegexs) {
         this.excludeList = ignoredRegexs;
     }
 
-    /** @return the exclude list */
+    /**
+     * @return the exclude list
+     */
     public List<String> getExcludeList() {
         return excludeList;
     }
 
-    /** @return description of the plugin */
+    /**
+     * @return description of the plugin
+     */
     @Override
     public String getDescription() {
         return this.getMessages().getString("spiderajax.desc");

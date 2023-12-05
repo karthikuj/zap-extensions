@@ -85,8 +85,8 @@ public class ClientHistoryTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         ReportedObject obj = this.history.get(rowIndex);
-        if (obj instanceof ReportedNode) {
-            ReportedNode node = (ReportedNode) obj;
+        if (obj instanceof ReportedElement) {
+            ReportedElement node = (ReportedElement) obj;
 
             switch (columnIndex) {
                 case 0:
@@ -102,7 +102,7 @@ public class ClientHistoryTableModel extends AbstractTableModel {
                 case 5:
                     return node.getNodeName();
                 case 6:
-                    return node.getNodeId();
+                    return node.getId();
                 case 7:
                     return node.getText();
                 default:
@@ -133,6 +133,10 @@ public class ClientHistoryTableModel extends AbstractTableModel {
             }
         }
         return null;
+    }
+
+    public ReportedObject getReportedObject(int rowIndex) {
+        return this.history.get(rowIndex);
     }
 
     public synchronized void addReportedObject(ReportedObject obj) {

@@ -26,6 +26,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.anyInt;
 import static org.mockito.BDDMockito.anyLong;
@@ -57,8 +58,11 @@ import org.parosproxy.paros.db.TableHistory;
 import org.parosproxy.paros.extension.ExtensionLoader;
 import org.parosproxy.paros.model.HistoryReference;
 import org.parosproxy.paros.model.Model;
+import org.zaproxy.addon.commonlib.ExtensionCommonlib;
 import org.zaproxy.zap.extension.ascan.VariantFactory;
+import org.zaproxy.zap.extension.openapi.OpenApiExceptions.InvalidDefinitionException;
 import org.zaproxy.zap.model.Context;
+import org.zaproxy.zap.model.DefaultValueGenerator;
 import org.zaproxy.zap.testutils.NanoServerHandler;
 import org.zaproxy.zap.utils.I18N;
 import org.zaproxy.zap.utils.ZapXmlConfiguration;
@@ -83,6 +87,11 @@ class ExtensionOpenApiTest extends AbstractServerTest {
 
         Control.initSingletonForTesting(Model.getSingleton(), extensionLoader);
         Model.getSingleton().getOptionsParam().load(new ZapXmlConfiguration());
+
+        ExtensionCommonlib extCommonlib =
+                mock(ExtensionCommonlib.class, withSettings().strictness(Strictness.LENIENT));
+        given(extensionLoader.getExtension(ExtensionCommonlib.class)).willReturn(extCommonlib);
+        given(extCommonlib.getValueGenerator()).willReturn(new DefaultValueGenerator());
 
         tableHistory = mock(TableHistory.class);
         HistoryReference.setTableHistory(tableHistory);
@@ -136,36 +145,40 @@ class ExtensionOpenApiTest extends AbstractServerTest {
         // Given
         this.nano.addHandler(new EmptyServerHandler());
         URI uri = new URI("http://localhost:" + this.nano.getListeningPort() + "/non-defn", false);
-
-        // When
-        List<String> errors = extensionOpenApi.importOpenApiDefinition(uri, null, false);
-
-        // Then
-        assertThat(errors, is(not(empty())));
+        // When / Then
+        assertThrows(
+                InvalidDefinitionException.class,
+                () -> extensionOpenApi.importOpenApiDefinition(uri, null, false));
     }
 
     @Test
     void shouldFailBadJson() {
         // Given
         File file = getResourcePath("bad-json.json").toFile();
-
-        // When
-        List<String> errors = extensionOpenApi.importOpenApiDefinition(file, false);
-
-        // Then
-        assertThat(errors, is(not(empty())));
+        // When / Then
+        assertThrows(
+                InvalidDefinitionException.class,
+                () -> extensionOpenApi.importOpenApiDefinition(file, false));
     }
 
     @Test
     void shouldFailBadYaml() {
         // Given
         File file = getResourcePath("bad-yaml.yml").toFile();
+        // When / Then
+        assertThrows(
+                InvalidDefinitionException.class,
+                () -> extensionOpenApi.importOpenApiDefinition(file, false));
+    }
 
-        // When
-        List<String> errors = extensionOpenApi.importOpenApiDefinition(file, false);
-
-        // Then
-        assertThat(errors, is(not(empty())));
+    @Test
+    void shouldFailEmptyFile() throws Exception {
+        // Given
+        File file = File.createTempFile("empty", "json");
+        // When / Then
+        assertThrows(
+                OpenApiExceptions.EmptyDefinitionException.class,
+                () -> extensionOpenApi.importOpenApiDefinition(file, false));
     }
 
     @Test

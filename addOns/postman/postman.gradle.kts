@@ -1,4 +1,4 @@
-description = "Imports and spiders Postman definitions."
+description = "Imports and spiders Postman collections."
 
 zapAddOn {
     addOnName.set("Postman Support")
@@ -6,6 +6,14 @@ zapAddOn {
     manifest {
         author.set("ZAP Dev Team")
         url.set("https://www.zaproxy.org/docs/desktop/addons/postman-support/")
+
+        dependencies {
+            addOns {
+                register("commonlib") {
+                    version.set(">= 1.16.0 & < 2.0.0")
+                }
+            }
+        }
     }
 
     apiClientGen {
@@ -20,4 +28,10 @@ crowdin {
         tokens.put("%messagesPath%", resourcesPath)
         tokens.put("%helpPath%", resourcesPath)
     }
+}
+
+dependencies {
+    zapAddOn("commonlib")
+
+    testImplementation(project(":testutils"))
 }

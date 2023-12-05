@@ -5,8 +5,12 @@ description = "Provides core networking capabilities."
 val bouncyCastle by configurations.creating
 configurations.api { extendsFrom(bouncyCastle) }
 
+val brotli by configurations.creating
 val hc by configurations.creating
-configurations.implementation { extendsFrom(hc) }
+configurations.implementation {
+    extendsFrom(brotli)
+    extendsFrom(hc)
+}
 
 zapAddOn {
     addOnName.set("Network")
@@ -23,6 +27,7 @@ zapAddOn {
 
         bundledLibs {
             libs.from(bouncyCastle)
+            libs.from(brotli)
             libs.from(hc)
         }
     }
@@ -46,6 +51,7 @@ spotless {
             fileTree(projectDir) {
                 include("src/**/*.java")
                 exclude("src/main/java/org/apache/hc/client5/**/Zap*.java")
+                exclude("src/main/java/org/apache/hc/client5/**/cookie/*.java")
                 exclude("src/main/java/org/apache/hc/core5/**/*.java")
                 exclude("src/main/java/org/zaproxy/addon/network/internal/codec/netty/*.java")
             },
@@ -54,7 +60,7 @@ spotless {
 }
 
 dependencies {
-    val nettyVersion = "4.1.94.Final"
+    val nettyVersion = "4.1.100.Final"
     implementation("io.netty:netty-codec:$nettyVersion")
     implementation("io.netty:netty-handler:$nettyVersion")
     implementation("io.netty:netty-codec-http2:$nettyVersion")
@@ -65,11 +71,18 @@ dependencies {
         exclude(group = "org.apache.logging.log4j")
     }
 
-    val bcVersion = "1.74"
+    val bcVersion = "1.76"
     val bcJava = "jdk18on"
     bouncyCastle("org.bouncycastle:bcmail-$bcJava:$bcVersion")
     bouncyCastle("org.bouncycastle:bcprov-$bcJava:$bcVersion")
     bouncyCastle("org.bouncycastle:bcpkix-$bcJava:$bcVersion")
+
+    val brotliVersion = "1.13.0"
+    brotli("com.aayushatharva.brotli4j:brotli4j:$brotliVersion")
+    brotli("com.aayushatharva.brotli4j:native-windows-x86_64:$brotliVersion")
+    brotli("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
+    brotli("com.aayushatharva.brotli4j:native-osx-x86_64:$brotliVersion")
+    brotli("com.aayushatharva.brotli4j:native-osx-aarch64:$brotliVersion")
 
     implementation("org.jitsi:ice4j:3.0-24-g34c2ce5") {
         // Don't need its dependencies, for now.
@@ -77,10 +90,8 @@ dependencies {
     }
 
     testImplementation("org.hamcrest:hamcrest-library:2.2")
-    val jupiterVersion = "5.9.2"
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$jupiterVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.mockito:mockito-junit-jupiter:5.1.1")
     testImplementation(libs.log4j.core)
 }

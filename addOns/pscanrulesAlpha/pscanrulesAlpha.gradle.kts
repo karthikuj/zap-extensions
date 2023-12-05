@@ -8,7 +8,7 @@ zapAddOn {
         dependencies {
             addOns {
                 register("commonlib") {
-                    version.set(">= 1.10.0 & < 2.0.0")
+                    version.set(">= 1.17.0 & < 2.0.0")
                 }
             }
         }
@@ -17,8 +17,7 @@ zapAddOn {
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("commonlib")!!)
+    zapAddOn("commonlib")
 
-    testImplementation(parent!!.childProjects.get("commonlib")!!)
     testImplementation(project(":testutils"))
 }

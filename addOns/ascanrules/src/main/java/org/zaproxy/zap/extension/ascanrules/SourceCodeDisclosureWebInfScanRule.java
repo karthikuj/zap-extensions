@@ -42,8 +42,8 @@ import org.parosproxy.paros.core.scanner.Category;
 import org.parosproxy.paros.network.HttpMalformedHeaderException;
 import org.parosproxy.paros.network.HttpMessage;
 import org.zaproxy.addon.commonlib.CommonAlertTag;
-import org.zaproxy.zap.model.Vulnerabilities;
-import org.zaproxy.zap.model.Vulnerability;
+import org.zaproxy.addon.commonlib.vulnerabilities.Vulnerabilities;
+import org.zaproxy.addon.commonlib.vulnerabilities.Vulnerability;
 
 /**
  * a scanner that looks for Java classes disclosed via the WEB-INF folder and that decompiles them
@@ -71,6 +71,7 @@ public class SourceCodeDisclosureWebInfScanRule extends AbstractHostPlugin {
                             new String[] {
                                 "web.xml", "applicationContext.xml" // for Spring
                             }));
+
     /**
      * match on Java class names (including the package info) we're "flexible" on the package names
      * and class names containing uppercase versus lowercase, by necessity.
@@ -90,7 +91,7 @@ public class SourceCodeDisclosureWebInfScanRule extends AbstractHostPlugin {
      * details of the vulnerability which we are attempting to find 34 = Predictable Resource
      * Location
      */
-    private static final Vulnerability vuln = Vulnerabilities.getVulnerability("wasc_34");
+    private static final Vulnerability VULN = Vulnerabilities.getDefault().get("wasc_34");
 
     private static final Logger LOGGER =
             LogManager.getLogger(SourceCodeDisclosureWebInfScanRule.class);
@@ -107,10 +108,7 @@ public class SourceCodeDisclosureWebInfScanRule extends AbstractHostPlugin {
 
     @Override
     public String getDescription() {
-        if (vuln != null) {
-            return vuln.getDescription();
-        }
-        return "Failed to load vulnerability description from file";
+        return VULN.getDescription();
     }
 
     @Override
@@ -120,25 +118,12 @@ public class SourceCodeDisclosureWebInfScanRule extends AbstractHostPlugin {
 
     @Override
     public String getSolution() {
-        if (vuln != null) {
-            return vuln.getSolution();
-        }
-        return "Failed to load vulnerability solution from file";
+        return VULN.getSolution();
     }
 
     @Override
     public String getReference() {
-        if (vuln != null) {
-            StringBuilder sb = new StringBuilder();
-            for (String ref : vuln.getReferences()) {
-                if (sb.length() > 0) {
-                    sb.append('\n');
-                }
-                sb.append(ref);
-            }
-            return sb.toString();
-        }
-        return "Failed to load vulnerability reference from file";
+        return VULN.getReferencesAsString();
     }
 
     @Override

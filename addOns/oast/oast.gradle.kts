@@ -1,5 +1,6 @@
 import org.rm3l.datanucleus.gradle.DataNucleusApi
 import org.rm3l.datanucleus.gradle.extensions.enhance.EnhanceExtension
+import org.zaproxy.gradle.addon.AddOnPlugin
 import org.zaproxy.gradle.addon.AddOnStatus
 
 description = "Allows you to exploit out-of-band vulnerabilities"
@@ -39,6 +40,10 @@ zapAddOn {
     }
 }
 
+tasks.named(AddOnPlugin.GENERATE_MANIFEST_TASK_NAME) {
+    mustRunAfter(tasks.named("enhance"))
+}
+
 crowdin {
     configuration {
         val resourcesPath = "org/zaproxy/addon/${zapAddOn.addOnId.get()}/resources/"
@@ -57,10 +62,9 @@ datanucleus {
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects["database"]!!)
-    compileOnly(parent!!.childProjects["graaljs"]!!)
-    compileOnly(parent!!.childProjects["network"]!!)
+    zapAddOn("database")
+    zapAddOn("graaljs")
+    zapAddOn("network")
 
     testImplementation(project(":testutils"))
-    testImplementation(parent!!.childProjects["network"]!!)
 }

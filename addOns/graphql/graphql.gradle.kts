@@ -9,7 +9,7 @@ zapAddOn {
         dependencies {
             addOns {
                 register("commonlib") {
-                    version.set(">= 1.14.0 & < 2.0.0")
+                    version.set(">= 1.17.0 & < 2.0.0")
                 }
             }
         }
@@ -21,20 +21,7 @@ zapAddOn {
                 dependencies {
                     addOns {
                         register("automation") {
-                            version.set(">=0.24.0")
-                        }
-                    }
-                }
-            }
-
-            register("org.zaproxy.addon.graphql.formhandler.ExtensionGraphQlFormHandler") {
-                classnames {
-                    allowed.set(listOf("org.zaproxy.addon.graphql.formhandler"))
-                }
-                dependencies {
-                    addOns {
-                        register("formhandler") {
-                            version.set(">=6.0.0 & < 7.0.0")
+                            version.set(">=0.31.0")
                         }
                     }
                 }
@@ -71,17 +58,16 @@ crowdin {
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("automation")!!)
-    compileOnly(parent!!.childProjects.get("commonlib")!!)
-    compileOnly(parent!!.childProjects.get("formhandler")!!)
-    compileOnly(parent!!.childProjects.get("spider")!!)
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("com.graphql-java:graphql-java:20.4")
+    zapAddOn("automation")
+    zapAddOn("commonlib")
+    zapAddOn("spider")
 
-    testImplementation(parent!!.childProjects.get("automation")!!)
-    testImplementation(parent!!.childProjects.get("commonlib")!!)
-    testImplementation(parent!!.childProjects.get("formhandler")!!)
-    testImplementation(parent!!.childProjects.get("spider")!!)
+    implementation("com.graphql-java:graphql-java:21.3")
+    implementation(libs.log4j.slf4j2) {
+        // Provided by ZAP.
+        exclude(group = "org.apache.logging.log4j")
+    }
+
     testImplementation(project(":testutils"))
     testImplementation(libs.log4j.core)
 }

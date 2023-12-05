@@ -54,12 +54,6 @@
 			<td align="center">(None)</td>
 			<td>Key: <code>selenium.firefoxBinary</code><br>Value: file system path to the Firefox binary</td>
 		</tr>
-		<tr>
-			<td>PhantomJS</td>
-			<td>This allows you to select the location of PhantomJS binary.</td>
-			<td align="center">(None)</td>
-			<td>Key: <code>selenium.phantomJsBinary</code><br>Value: file system path to the PhantomJS binary</td>
-		</tr>
 	</table>
 	<strong>Note:</strong> It's also possible to set the above locations (binaries and
 	WebDrivers) using Java system properties, in which case the above options will be
@@ -67,6 +61,19 @@
 
 	<p>
 	More details about the bundled WebDrivers can be found on the overview page.
+
+	<h4>Browser Arguments</h4>
+	Both Chrome and Firefox binaries can have additional (CLI) arguments specified through the <code>Arguments...</code> button.
+
+	<p>
+	<strong>Note:</strong> Adding invalid arguments might cause the browser to fail to start. ZAP already adds some arguments (e.g. headless).
+
+	<h4>Browser Profiles</h4>
+	You can choose which Firefox profile to use by default.
+	The <code>&lt;temporary&gt;</code> profile is one which is created by Selenium each time the browser is launched.
+	<p>
+	<strong>Note:</strong> The 'client' add-on creates a profile called zap-client-profile - 
+	if you choose another profile then the Client add-on will not work without manual configuration.
 
 	<h3>Browser Extensions</h3>
 

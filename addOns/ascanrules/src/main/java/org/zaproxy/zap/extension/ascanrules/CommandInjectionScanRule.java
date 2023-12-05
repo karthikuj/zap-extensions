@@ -42,19 +42,18 @@ import org.parosproxy.paros.core.scanner.Alert;
 import org.parosproxy.paros.core.scanner.Category;
 import org.parosproxy.paros.network.HttpMessage;
 import org.zaproxy.addon.commonlib.CommonAlertTag;
-import org.zaproxy.zap.extension.ascanrules.timing.TimingUtils;
+import org.zaproxy.addon.commonlib.timing.TimingUtils;
+import org.zaproxy.addon.commonlib.vulnerabilities.Vulnerabilities;
+import org.zaproxy.addon.commonlib.vulnerabilities.Vulnerability;
 import org.zaproxy.zap.extension.ruleconfig.RuleConfigParam;
 import org.zaproxy.zap.model.Tech;
 import org.zaproxy.zap.model.TechSet;
-import org.zaproxy.zap.model.Vulnerabilities;
-import org.zaproxy.zap.model.Vulnerability;
 
 /**
  * Active scan rule for Command Injection testing and verification.
  * https://owasp.org/www-community/attacks/Command_Injection
  *
  * @author yhawke (2013)
- * @author kingthorin+owaspzap@gmail.com (2015)
  */
 public class CommandInjectionScanRule extends AbstractAppParamPlugin {
 
@@ -212,11 +211,8 @@ public class CommandInjectionScanRule extends AbstractAppParamPlugin {
     /** The default number of seconds used in time-based attacks (i.e. sleep commands). */
     private static final int DEFAULT_TIME_SLEEP_SEC = 5;
 
-    // time-based attack detection will not send more than the following number of requests
-    private static final int BLIND_REQUEST_LIMIT = 5;
-    // time-based attack detection will try to take less than the following number of seconds
-    // note: detection of this length will generally only happen in the positive (detecting) case.
-    private static final double BLIND_SECONDS_LIMIT = 20.0;
+    // limit the maximum number of requests sent for time-based attack detection
+    private static final int BLIND_REQUESTS_LIMIT = 4;
 
     // error range allowable for statistical time-based blind attacks (0-1.0)
     private static final double TIME_CORRELATION_ERROR_RANGE = 0.15;
@@ -289,7 +285,7 @@ public class CommandInjectionScanRule extends AbstractAppParamPlugin {
     private static final Logger LOGGER = LogManager.getLogger(CommandInjectionScanRule.class);
 
     // Get WASC Vulnerability description
-    private static final Vulnerability vuln = Vulnerabilities.getVulnerability("wasc_31");
+    private static final Vulnerability VULN = Vulnerabilities.getDefault().get("wasc_31");
 
     /** The number of seconds used in time-based attacks (i.e. sleep commands). */
     private int timeSleepSeconds = DEFAULT_TIME_SLEEP_SEC;
@@ -326,11 +322,7 @@ public class CommandInjectionScanRule extends AbstractAppParamPlugin {
 
     @Override
     public String getSolution() {
-        if (vuln != null) {
-            return vuln.getSolution();
-        }
-
-        return "Failed to load vulnerability solution from file";
+        return VULN.getSolution();
     }
 
     @Override
@@ -628,8 +620,8 @@ public class CommandInjectionScanRule extends AbstractAppParamPlugin {
                     // use TimingUtils to detect a response to sleep payloads
                     isInjectable =
                             TimingUtils.checkTimingDependence(
-                                    BLIND_REQUEST_LIMIT,
-                                    BLIND_SECONDS_LIMIT,
+                                    BLIND_REQUESTS_LIMIT,
+                                    timeSleepSeconds,
                                     requestSender,
                                     TIME_CORRELATION_ERROR_RANGE,
                                     TIME_SLOPE_ERROR_RANGE);

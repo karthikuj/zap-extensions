@@ -181,6 +181,39 @@
     "scriptSrc": "/assets/components/templates/\\;confidence:50",
     "website": "https://modx.com/content-management-framework"
   },
+  "Morphext": {
+    "cats": [
+      25,
+      59
+    ],
+    "description": "A simple, high-performance and cross-browser jQuery rotating / carousel plugin for text phrases powered by Animate.css.",
+    "icon": "Morphext.svg",
+    "oss": true,
+    "scriptSrc": "morphext(?:\\.min)?\\.js(?:\\?ver=((?:\\d+\\.)+\\d+))?\\;version:\\1",
+    "website": "https://morphext.fyianlai.com/"
+  },
+    "Morris.js": {
+    "cats": [
+      59
+    ],
+    "description": "A JavaScript library that simplifies the process of creating interactive and responsive data visualizations on the web.",
+    "oss": true,
+    "requires": [
+      "jQuery",
+      "Raphael"
+    ],
+    "scriptSrc": "morris(?:\\/(?:area|bar|donut|grid|hover|line))?(?:\\.min)?\\.js(?:\\?ver=((?:\\d+\\.)+\\d+))?\\;version:\\1",
+    "website": "https://morrisjs.github.io/morris.js/"
+  },
+  "Moxie": {
+    "cats": [5, 68],
+    "description": "Pollyfills for XHR2 and File API",
+    "website": "https://github.com/moxiecode/moxie",
+    "oss": true,
+    "scriptSrc": [
+      "moxie(?:\\.min)?\\.js(?:\\?ver=([\\d.]+))?\\;version:\\1"
+    ]
+  },
   "MRW": {
     "cats": [
       99
@@ -355,12 +388,12 @@
     },
     "oss": true,
     "probe": {
-      "/magento_version": ""
+      "/magento_version": "magento"
     },
     "scriptSrc": [
       "js/mage",
       "skin/frontend/(?:default|(enterprise))\\;version:\\1?1 (Enterprise):1 (Community)",
-      "skin/frontend/\\;confidence:50\\;version:\\1",
+      "skin/frontend/\\;confidence:50",
       "static/_requirejs\\;confidence:50\\;version:2"
     ],
     "website": "https://magento.com"
@@ -397,6 +430,31 @@
     ],
     "scriptSrc": "\\.magisto\\.com/",
     "website": "https://www.magisto.com"
+  },
+  "Magixite": {
+    "cats": [
+      68
+    ],
+    "description": "Magixite offers the Web Content Accessibility Guidelines (WCAG), a set of guidelines and requirements designed to help designers and developers improve the accessibility of web content, ensuring it can be effectively used by individuals with disabilities.",
+    "icon": "Magixite.png",
+    "pricing": [
+      "freemium",
+      "low",
+      "recurring"
+    ],
+    "saas": true,
+    "scriptSrc": "acc\\.magixite\\.com/",
+    "website": "https://acc.magixite.com"
+  },
+  "Magnific Popup": {
+    "cats": [
+      59
+    ],
+    "description": "Magnific Popup is a responsive lightbox & dialog script with focus on performance and providing best experience for user with any device.",
+    "icon": "Magnific Popup.png",
+    "oss": true,
+    "scriptSrc": "magnific-popup(?:\\.min)?\\.js(?:\\?v(?:er)?=((?:\\d+\\.)+\\d+))?\\;version:\\1",
+    "website": "https://dimsemenov.com/plugins/magnific-popup/"
   },
   "MailChimp": {
     "cats": [
@@ -464,6 +522,16 @@
     "requires": "WordPress",
     "scriptSrc": "/wp-content/plugins/mailchimp-for-wp/.+\\.js(?:\\?ver=(\\d+(?:\\.\\d+)+))?\\;version:\\1",
     "website": "https://www.mc4wp.com"
+  },
+  "Mailcheck": {
+    "cats": [
+      59
+    ],
+    "description": "Mailcheck is a JavaScript library designed to address the issue of misspelled email addresses during user input.",
+    "icon": "Mailcheck.png",
+    "oss": true,
+    "scriptSrc": "mailcheck(?:\\.min)?\\.js(?:\\?v(?:er)?=(\\d+\\.\\d+\\.\\d+))?\\;version:\\1",
+    "website": "https://github.com/mailcheck/mailcheck"
   },
   "MailerLite": {
     "cats": [
@@ -668,13 +736,14 @@
   },
   "Mantine": {
     "cats": [
-      59
+      66
     ],
-    "description": "Mantine is a React components library.",
+    "description": "Mantine is an open-source UI framework and component library for React.",
     "dom": "style[data-emotion='mantine-global'], style[data-emotion='mantine']",
     "icon": "Mantine.svg",
     "implies": "TypeScript",
     "oss": true,
+    "requires": "React",
     "website": "https://mantine.dev"
   },
   "MantisBT": {
@@ -682,9 +751,12 @@
       13
     ],
     "cpe": "cpe:2.3:a:mantisbt:mantisbt:*:*:*:*:*:*:*:*",
-    "html": "<img[^>]+ alt=\"Powered by Mantis Bugtracker",
+    "description": "MantisBT is an open-source, web-based issue tracking system written in PHP with a MySQL database backend, designed to facilitate bug tracking and project management for software development teams.",
+    "dom": "link[rel='stylesheet'][href*='/css/ace-mantis.css']",
     "icon": "MantisBT.png",
-    "implies": "PHP",
+    "implies": "MySQL",
+    "oss": true,
+    "requires": "PHP",
     "website": "https://www.mantisbt.org"
   },
   "ManyChat": {
@@ -1162,6 +1234,8 @@
     "description": "Mautic is a free and open-source marketing automation tool for Content Management, Social Media, Email Marketing, and can be used for the integration of social networks, campaign management, forms, questionnaires, reports, etc.",
     "icon": "mautic.svg",
     "js": {
+      "MauticFormValidations": "",
+      "MauticSDK": "",
       "MauticTrackingObject": ""
     },
     "scriptSrc": "[^a-z]mtc.*\\.js",
@@ -1823,11 +1897,14 @@
     "cats": [
       22
     ],
+    "description": "Microsoft HTTPAPI is a kernel-mode HTTP driver in the Windows operating system responsible for handling HTTP requests and responses with efficiency, scalability, and security.",
     "headers": {
       "Server": "Microsoft-HTTPAPI(?:/([\\d.]+))?\\;version:\\1"
     },
     "icon": "Microsoft.svg",
-    "website": "https://microsoft.com"
+    "oss": false,
+    "saas": false,
+    "website": "https://learn.microsoft.com/en-us/windows/win32/http/http-api-start-page"
   },
   "Microsoft PowerPoint": {
     "cats": [
@@ -2230,17 +2307,6 @@
     "scriptSrc": "cdn\\.moengage\\.\\w+",
     "website": "https://www.moengage.com"
   },
-  "Moat": {
-    "cats": [
-      10
-    ],
-    "description": "Moat is a digital ad analytics tool.",
-    "icon": "Moat.svg",
-    "scriptSrc": [
-      "moatads\\.com"
-    ],
-    "website": "https://moat.com/"
-  },
   "MobX": {
     "cats": [
       59
@@ -2535,6 +2601,25 @@
     "requires": "WordPress",
     "scriptSrc": "/wp-content/plugins/woocommerce-gateway-moneris/",
     "website": "https://wordpress.org/plugins/wc-moneris-payment-gateway"
+  },
+  "Monetate": {
+    "cats": [
+      74,
+      76
+    ],
+    "description": "Monetate is a company that specializes in providing personalisation and customer experience optimisation solutions to businesses.",
+    "icon": "Monetate.svg",
+    "js": {
+      "monetate": "",
+      "monetateQ": "",
+      "monetateT": ""
+    },
+    "pricing": [
+      "poa"
+    ],
+    "saas": true,
+    "scriptSrc": "\\.monetate\\.net",
+    "website": "https://monetate.com"
   },
   "MongoDB": {
     "cats": [
@@ -3231,6 +3316,15 @@
     "icon": "Mobicred.png",
     "scriptSrc": "app\\.mobicredwidget\\.co\\.za",
     "website": "https://mobicred.co.za/"
+  },
+  "mobile-detect.js": {
+    "cats": [
+      59
+    ],
+    "description": "Mobile-detect.js is a compact JavaScript library designed to detect devices by comparing patterns against a given User-Agent string.",
+    "oss": true,
+    "scriptSrc": "mobile-detect(?:\\.min)?\\.js(?:\\?ver=((?:\\d+\\.)+\\d+))?\\;version:\\1",
+    "website": "https://hgoebl.github.io/mobile-detect.js/doc/MobileDetect.html"
   },
   "mod_auth_pam": {
     "cats": [

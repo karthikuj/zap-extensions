@@ -43,7 +43,7 @@
 			<em
 				th:text="#{report.generated(${#dates.format(new java.util.Date(), 'EEE, d MMM yyyy HH:mm:ss')})}"
 				th:class="'text-right'">Date, time</em> <em
-				th:text="#{report.owaspZapVersion(${zapVersion})}"
+				th:text="#{report.zapVersion(${zapVersion})}"
 				th:class="'text-right'">ZAP Version</em>
 		</div>
 	</div>
@@ -250,7 +250,7 @@
 										href="#">Alert Name</a>
 								</span></td>
 								<td><span
-									th:with="desc=${#strings.arraySplit(alert.userObject.description, '\n')[0]}">
+									th:with="desc=${#strings.isEmpty(alert.userObject.description) ? '' : #strings.arraySplit(alert.userObject.description, '\n')[0]}">
 										<div th:text="${desc}">Description</div>
 								</span></td>
 							</tr>

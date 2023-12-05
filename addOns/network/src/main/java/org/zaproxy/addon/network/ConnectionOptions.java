@@ -45,7 +45,7 @@ public class ConnectionOptions extends VersionedAbstractParam {
     private static final Logger LOGGER = LogManager.getLogger(ConnectionOptions.class);
 
     public static final String DEFAULT_DEFAULT_USER_AGENT =
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36";
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36";
 
     /** The default connection timeout (in seconds). */
     public static final int DEFAULT_TIMEOUT = 20;
@@ -62,7 +62,7 @@ public class ConnectionOptions extends VersionedAbstractParam {
      * @see #CONFIG_VERSION_KEY
      * @see #updateConfigsImpl(int)
      */
-    protected static final int CURRENT_CONFIG_VERSION = 3;
+    protected static final int CURRENT_CONFIG_VERSION = 4;
 
     private static final String BASE_KEY = "network.connection";
 
@@ -137,6 +137,8 @@ public class ConnectionOptions extends VersionedAbstractParam {
     /** The security property for TTL of successful DNS queries. */
     private static final String DNS_TTL_SUCCESSFUL_QUERIES_SECURITY_PROPERTY =
             "networkaddress.cache.ttl";
+
+    private boolean legacyRemoveCacheHeaders;
 
     private static final boolean DEFAULT_STORE_HTTP_PROXY_PASS = true;
 
@@ -213,6 +215,17 @@ public class ConnectionOptions extends VersionedAbstractParam {
         parseSocksProxyOptions();
 
         notifyChangesListeners();
+
+        legacyRemoveCacheHeaders = getBoolean(BASE_KEY + ".legacy.removeCacheHeaders", false);
+    }
+
+    /**
+     * Not part of the public API.
+     *
+     * @return {@code false} by default.
+     */
+    public boolean isLegacyRemoveCacheHeaders() {
+        return legacyRemoveCacheHeaders;
     }
 
     private void migrateCoreConfigs() {

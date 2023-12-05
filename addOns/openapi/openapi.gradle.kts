@@ -17,7 +17,7 @@ zapAddOn {
                 dependencies {
                     addOns {
                         register("automation") {
-                            version.set(">=0.24.0")
+                            version.set(">=0.31.0")
                         }
                     }
                 }
@@ -34,23 +34,11 @@ zapAddOn {
                     }
                 }
             }
-            register("org.zaproxy.zap.extension.openapi.formhandler.ExtensionOpenApiFormHandler") {
-                classnames {
-                    allowed.set(listOf("org.zaproxy.zap.extension.openapi.formhandler"))
-                }
-                dependencies {
-                    addOns {
-                        register("formhandler") {
-                            version.set(">=6.0.0 & < 7.0.0")
-                        }
-                    }
-                }
-            }
         }
         dependencies {
             addOns {
                 register("commonlib") {
-                    version.set(">= 1.8.0 & < 2.0.0")
+                    version.set(">= 1.17.0 & < 2.0.0")
                 }
             }
         }
@@ -66,32 +54,26 @@ configurations {
     "implementation" {
         // Not needed:
         exclude(group = "com.google.code.findbugs", module = "jsr305")
-        exclude(group = "org.slf4j", module = "slf4j-ext")
     }
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("automation")!!)
-    compileOnly(parent!!.childProjects.get("commonlib")!!)
-    compileOnly(parent!!.childProjects.get("formhandler")!!)
-    compileOnly(parent!!.childProjects.get("spider")!!)
+    zapAddOn("automation")
+    zapAddOn("commonlib")
+    zapAddOn("spider")
 
-    implementation("io.swagger.parser.v3:swagger-parser:2.1.15")
-    implementation("io.swagger:swagger-compat-spec-parser:1.0.67") {
+    implementation("io.swagger.parser.v3:swagger-parser:2.1.19")
+    implementation("io.swagger:swagger-compat-spec-parser:1.0.68") {
         // Not needed:
         exclude(group = "com.github.java-json-tools", module = "json-schema-validator")
         exclude(group = "org.apache.httpcomponents", module = "httpclient")
     }
-    implementation(libs.log4j.slf4j) {
+    implementation(libs.log4j.slf4j2) {
         // Provided by ZAP.
         exclude(group = "org.apache.logging.log4j")
     }
 
-    testImplementation(parent!!.childProjects.get("commonlib")!!)
     testImplementation(parent!!.childProjects.get("commonlib")!!.sourceSets.test.get().output)
     testImplementation(libs.log4j.core)
-    testImplementation(parent!!.childProjects.get("automation")!!)
-    testImplementation(parent!!.childProjects.get("formhandler")!!)
-    testImplementation(parent!!.childProjects.get("spider")!!)
     testImplementation(project(":testutils"))
 }

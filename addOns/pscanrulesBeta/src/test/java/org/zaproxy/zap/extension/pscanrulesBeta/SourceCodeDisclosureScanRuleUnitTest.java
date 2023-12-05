@@ -35,6 +35,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.parosproxy.paros.Constant;
 import org.parosproxy.paros.core.scanner.Alert;
 import org.parosproxy.paros.network.HttpHeader;
+import org.parosproxy.paros.network.HttpMalformedHeaderException;
 import org.parosproxy.paros.network.HttpMessage;
 import org.zaproxy.addon.commonlib.CommonAlertTag;
 
@@ -202,6 +203,17 @@ class SourceCodeDisclosureScanRuleUnitTest
     }
 
     @Test
+    void shouldNotRaiseAlertOnValidPhpWhenControlCharactersInResponse()
+            throws HttpMalformedHeaderException, IOException {
+        // Given
+        msg.setResponseBody("<?=#:æ´Dü?>");
+        // When
+        scanHttpResponseReceive(msg);
+        // Then
+        assertEquals(0, alertsRaised.size());
+    }
+
+    @Test
     void shouldReturnExpectedMappings() {
         // Given / When
         Map<String, String> tags = rule.getAlertTags();
@@ -241,7 +253,7 @@ class SourceCodeDisclosureScanRuleUnitTest
         assertThat(alert.getName(), is(getLocalisedString("name") + " - " + language));
         assertThat(alert.getDescription(), is(getLocalisedString("desc") + " - " + language));
         assertThat(alert.getUri(), is(URI));
-        assertThat(alert.getOtherInfo(), is(getLocalisedString("extrainfo", evidence)));
+        assertThat(alert.getOtherInfo(), is(""));
         assertThat(alert.getSolution(), is(getLocalisedString("soln")));
         assertThat(alert.getReference(), is(getLocalisedString("refs")));
         assertThat(alert.getEvidence(), is(evidence));

@@ -20,7 +20,7 @@ zapAddOn {
         dependencies {
             addOns {
                 register("commonlib") {
-                    version.set(">= 1.13.0 & < 2.0.0")
+                    version.set(">= 1.16.0 & < 2.0.0")
                 }
             }
         }
@@ -36,10 +36,7 @@ crowdin {
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("commonlib")!!)
+    zapAddOn("commonlib")
 
-    implementation("com.google.code.gson:gson:2.8.8")
-
-    testImplementation(parent!!.childProjects.get("commonlib")!!)
     testImplementation(project(":testutils"))
 }

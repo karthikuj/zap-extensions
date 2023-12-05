@@ -45,6 +45,7 @@ import org.parosproxy.paros.extension.ExtensionPopupMenuItem;
 import org.parosproxy.paros.extension.SessionChangedListener;
 import org.parosproxy.paros.model.Session;
 import org.parosproxy.paros.network.HttpMessage;
+import org.parosproxy.paros.view.OptionsDialog;
 import org.parosproxy.paros.view.View;
 import org.zaproxy.zap.ZAP;
 import org.zaproxy.zap.extension.api.API;
@@ -105,8 +106,12 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
     private ExtensionScript extScript = null;
     private ScriptsTreeCellRenderer renderer = null;
 
+    private ScriptConsoleOptions scriptConsoleOptions;
+    private ScriptConsoleOptionsPanel scriptConsoleOptionsPanel;
+
     private ScriptWrapper currentLockedScript = null;
     private boolean lockOutputToDisplayedScript = false;
+
     // private ZapMenuItem menuEnableScripts = null;
 
     // private static final Logger LOGGER = Logger.getLogger(ExtensionScriptsUI.class);
@@ -139,6 +144,9 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
     @Override
     public void hook(ExtensionHook extensionHook) {
         super.hook(extensionHook);
+
+        extensionHook.addOptionsParamSet(getScriptConsoleOptions());
+
         this.getExtScript().addListener(this);
         extScriptType =
                 new ScriptType(
@@ -157,9 +165,16 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
         this.getExtScript().registerScriptEngineWrapper(nullEngineWrapper);
 
         if (hasView()) {
+            OptionsDialog optionsDialog = View.getSingleton().getOptionsDialog("");
+
+            String[] scriptNode = {Constant.messages.getString("options.script.title")};
+            scriptConsoleOptionsPanel = new ScriptConsoleOptionsPanel();
+            optionsDialog.addParamPanel(scriptNode, scriptConsoleOptionsPanel, true);
+
             extensionHook.getHookView().addSelectPanel(getScriptsPanel());
             extensionHook.addSessionListener(new ViewSessionChangedListener());
             extensionHook.getHookView().addWorkPanel(getConsolePanel());
+            extensionHook.addOptionsChangedListener(getConsolePanel().getCommandPanel());
             extensionHook.getHookMenu().addPopupMenuItem(getPopupInvokeScriptWithHttpMessageMenu());
             extensionHook.getHookMenu().addPopupMenuItem(getPopupEnableDisableScript());
             extensionHook.getHookMenu().addPopupMenuItem(getPopupRemoveScript());
@@ -175,6 +190,13 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
             extensionHook.getHookMenu().addPopupMenuItem(getPopupMenuItemSaveScript());
             ExtensionHelp.enableHelpKey(getConsolePanel(), "addon.scripts.console");
             ExtensionHelp.enableHelpKey(getScriptsPanel(), "addon.scripts.tree");
+        }
+    }
+
+    @Override
+    public void optionsLoaded() {
+        if (hasView()) {
+            getConsolePanel().getCommandPanel().optionsChanged(getScriptConsoleOptions());
         }
     }
 
@@ -251,6 +273,8 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
             if (scriptsPanel != null) {
                 scriptsPanel.unload();
             }
+            OptionsDialog optionsDialog = View.getSingleton().getOptionsDialog("");
+            optionsDialog.removeParamPanel(scriptConsoleOptionsPanel);
         }
 
         if (extScript != null) {
@@ -291,7 +315,14 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
         return extScript;
     }
 
-    private ConsolePanel getConsolePanel() {
+    ScriptConsoleOptions getScriptConsoleOptions() {
+        if (scriptConsoleOptions == null) {
+            scriptConsoleOptions = new ScriptConsoleOptions();
+        }
+        return scriptConsoleOptions;
+    }
+
+    ConsolePanel getConsolePanel() {
         if (consolePanel == null) {
             consolePanel = new ConsolePanel(this);
             consolePanel.setName(Constant.messages.getString("scripts.panel.title"));
@@ -386,6 +417,11 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
 
     @Override
     public void displayScript(ScriptWrapper script) {
+        displayScript(script, true);
+    }
+
+    @Override
+    public void displayScript(ScriptWrapper script, boolean allowFocus) {
         if (!View.isInitialised()) {
             return;
         }
@@ -413,7 +449,7 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
             this.saveChanges();
 
             // push to ScriptConsole
-            this.getConsolePanel().setScript(script);
+            this.getConsolePanel().setScript(script, allowFocus);
 
             // Show in the tree panel
             ScriptNode node = this.getExtScript().getTreeModel().getNodeForScript(script);
@@ -647,7 +683,7 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
     @Override
     public void scriptChanged(ScriptWrapper script) {
         if (View.isInitialised()) {
-            this.getScriptsPanel().setButtonStates();
+            getConsolePanel().updateButtonStates();
         }
         if (script.getType().getName().equals(SCRIPT_EXT_TYPE)) {
             // Extender scripts are installed and uninstalled when they are enabled/disabled
@@ -779,8 +815,13 @@ public class ExtensionScriptsUI extends ExtensionAdaptor implements ScriptEventL
 
     @Override
     public void selectNode(ScriptNode node, boolean expand) {
+        selectNode(node, expand, true);
+    }
+
+    @Override
+    public void selectNode(ScriptNode node, boolean expand, boolean allowFocus) {
         if (View.isInitialised()) {
-            this.getScriptsPanel().showInTree(node, expand);
+            this.getScriptsPanel().showInTree(node, expand, allowFocus);
             this.getScriptsPanel().setTabFocus();
         }
     }

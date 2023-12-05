@@ -9,6 +9,9 @@ zapAddOn {
 
         dependencies {
             addOns {
+                register("commonlib") {
+                    version.set(">=1.17.0")
+                }
                 register("network") {
                     version.set(">=0.7.0")
                 }
@@ -18,6 +21,6 @@ zapAddOn {
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("network")!!)
-    testImplementation(parent!!.childProjects.get("network")!!)
+    zapAddOn("network")
+    zapAddOn("commonlib")
 }

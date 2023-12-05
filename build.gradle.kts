@@ -1,13 +1,21 @@
 import net.ltgt.gradle.errorprone.errorprone
+import org.zaproxy.gradle.spotless.ValidateImports
 
 plugins {
     id("com.diffplug.spotless")
-    id("com.github.ben-manes.versions") version "0.45.0"
-    id("org.sonarqube") version "3.5.0.2730"
-    id("net.ltgt.errorprone") version "3.0.1"
+    id("com.github.ben-manes.versions") version "0.50.0"
+    id("org.sonarqube") version "4.3.0.3225"
+    id("net.ltgt.errorprone") version "3.1.0"
 }
 
 apply(from = "$rootDir/gradle/ci.gradle.kts")
+
+val validateImports = ValidateImports(
+    mapOf(
+        "import org.apache.commons.lang." to
+            "Import/use classes from Commons Lang 3, instead of Lang 2.",
+    ),
+)
 
 allprojects {
     apply(plugin = "com.diffplug.spotless")
@@ -16,9 +24,6 @@ allprojects {
 
     repositories {
         mavenCentral()
-        maven {
-            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-        }
     }
 
     spotless {
@@ -30,16 +35,19 @@ allprojects {
             java {
                 licenseHeaderFile("$rootDir/gradle/spotless/license.java")
                 googleJavaFormatAosp()
+
+                bumpThisNumberIfACustomStepChanges(1)
+                custom("validateImports", validateImports)
             }
         }
     }
 
     project.plugins.withType(JavaPlugin::class) {
         dependencies {
-            "errorprone"("com.google.errorprone:error_prone_core:2.18.0")
+            "errorprone"("com.google.errorprone:error_prone_core:2.23.0")
         }
 
-        configure<JavaPluginConvention> {
+        java {
             val javaVersion = JavaVersion.VERSION_11
             sourceCompatibility = javaVersion
             targetCompatibility = javaVersion
@@ -68,5 +76,10 @@ sonarqube {
         property("sonar.projectKey", "zaproxy_zap-extensions")
         property("sonar.organization", "zaproxy")
         property("sonar.host.url", "https://sonarcloud.io")
+        // Workaround https://sonarsource.atlassian.net/browse/SONARGRADL-126
+        property("sonar.exclusions", "**/*.gradle.kts")
     }
 }
+
+fun Project.java(configure: JavaPluginExtension.() -> Unit): Unit =
+    (this as ExtensionAware).extensions.configure("java", configure)

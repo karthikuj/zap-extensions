@@ -4,7 +4,24 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Changed
+- Depend on newer version of Common Library add-on.
 
+### Fixed
+- Use high and low delays for linear regression time-based tests to fix false positives from delays that were smaller than normal variance in application response times, which affected Command Injection scan rule.
+
+## [58] - 2023-10-12
+### Changed
+- Update minimum ZAP version to 2.14.0.
+
+## [57] - 2023-09-08
+### Changed
+- Maintenance changes.
+- Depend on newer version of Common Library add-on.
+- Use vulnerability data directly from Common Library add-on.
+
+### Fixed
+- False positive where linear regression time-based tests returned true when there were not enough requests for a statistically meaningful measurement.
 
 ## [56] - 2023-07-11
 ### Added
@@ -434,6 +451,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
+[58]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v58
+[57]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v57
 [56]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v56
 [55]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v55
 [54]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v54

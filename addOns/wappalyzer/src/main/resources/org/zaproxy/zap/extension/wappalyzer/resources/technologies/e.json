@@ -1,4 +1,28 @@
 {
+  "E-Com Plus": {
+    "cats": [
+      108
+    ],
+    "description": "E-Com Plus is an open fair-code ecommerce platform designed to be used with headless commerce APIs.",
+    "icon": "E-Com Plus.svg",
+    "implies": [
+      "Vue.js",
+      "TypeScript"
+    ],
+    "js": {
+      "ecomPassport.storageKey": "ecomPassportClient"
+    },
+    "meta": {
+      "generator": "^E-Com\\sPlus\\sStorefront$"
+    },
+    "pricing": [
+      "poa",
+      "recurring",
+      "payg"
+    ],
+    "saas": true,
+    "website": "https://www.ecomplus.io"
+  },
   "E-monsite": {
     "cats": [
       1
@@ -790,6 +814,21 @@
     "oss": true,
     "website": "https://elixir-lang.org"
   },
+  "ElkArte": {
+    "cats": [
+      2
+    ],
+    "description": "ElkArte is an open-source PHP-based forum software with MySQL integration, offering features such as user authentication, topic categorisation, post formatting, private messaging, moderation tools, and customisable themes and extensions.",
+    "icon": "ElkArte.png",
+    "implies": "MySQL",
+    "js": {
+      "elk_forum_action": "",
+      "elk_iso_case_folding": ""
+    },
+    "oss": true,
+    "requires": "PHP",
+    "website": "https://www.elkarte.net"
+  },
   "Ellucian CRM Recruit": {
     "cats": [
       53,
@@ -1135,6 +1174,15 @@
     "scriptSrc": "cdn\\.enlistly\\.com/",
     "website": "https://enlistly.com"
   },
+  "Enquire.js": {
+    "cats": [
+      59
+    ],
+    "description": "enquire.js is a lightweight, pure JavaScript library for responding to CSS media queries.",
+    "oss": true,
+    "scriptSrc": "enquire(?:\\.min)?\\.js(?:\\?ver=((?:\\d+\\.)+\\d+))?\\;version:\\1",
+    "website": "https://wicky.nillia.ms/enquire.js/"
+  },
   "Ensi": {
     "cats": [
       6
@@ -1344,7 +1392,7 @@
     "cats": [
       27
     ],
-    "cpe": "cpe:2.3:a:erlang:erlang%2fotp:*:*:*:*:*:*:*:*",
+    "cpe": "cpe:2.3:a:erlang:erlang\\/otp:*:*:*:*:*:*:*:*",
     "description": "Erlang is a general-purpose, concurrent, functional programming language, and a garbage-collected runtime system.",
     "headers": {
       "Server": "Erlang( OTP/(?:[\\d.ABR-]+))?\\;version:\\1"
@@ -2142,18 +2190,6 @@
     "icon": "eway.png",
     "scriptSrc": "secure\\.ewaypayments\\.com",
     "website": "https://www.eway.com.au/"
-  },
-  "eZ Platform": {
-    "cats": [
-      1,
-      6
-    ],
-    "icon": "eZ.svg",
-    "implies": "Symfony",
-    "meta": {
-      "generator": "eZ Platform"
-    },
-    "website": "https://ezplatform.com/"
   },
   "eZ Publish": {
     "cats": [

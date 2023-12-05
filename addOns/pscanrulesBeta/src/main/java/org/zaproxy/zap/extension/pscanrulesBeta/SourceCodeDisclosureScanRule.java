@@ -654,7 +654,8 @@ public class SourceCodeDisclosureScanRule extends PluginPassiveScanner {
         if (ResourceIdentificationUtils.isCss(msg)
                 || ResourceIdentificationUtils.isJavaScript(msg)
                 || ResourceIdentificationUtils.isImage(msg)
-                || ResourceIdentificationUtils.isFont(msg)) {
+                || ResourceIdentificationUtils.isFont(msg)
+                || ResourceIdentificationUtils.responseContainsControlChars(msg)) {
             return;
         }
 
@@ -691,7 +692,6 @@ public class SourceCodeDisclosureScanRule extends PluginPassiveScanner {
                 .setRisk(Alert.RISK_MEDIUM)
                 .setConfidence(Alert.CONFIDENCE_MEDIUM)
                 .setDescription(getDescription() + " - " + programmingLanguage)
-                .setOtherInfo(getExtraInfo(evidence))
                 .setSolution(getSolution())
                 .setReference(getReference())
                 .setEvidence(evidence)
@@ -724,9 +724,5 @@ public class SourceCodeDisclosureScanRule extends PluginPassiveScanner {
 
     private String getReference() {
         return Constant.messages.getString(MESSAGE_PREFIX + "refs");
-    }
-
-    private String getExtraInfo(String evidence) {
-        return Constant.messages.getString(MESSAGE_PREFIX + "extrainfo", evidence);
     }
 }

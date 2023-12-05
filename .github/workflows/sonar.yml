@@ -16,10 +16,10 @@ jobs:
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
-        java-version: 11
+        java-version: 17
     - name: Gradle Test & Coverage Report
       run: ./gradlew test jacocoTestReport -Dorg.gradle.jvmargs=-Xmx4096m
     - name: Sonarcloud Scan
       env:
         SONAR_TOKEN: ${{ secrets.ZAPBOT_SONARCLOUD_TOKEN }}
-      run: ./gradlew sonarqube --stacktrace -Dorg.gradle.jvmargs=-Xmx4096m
+      run: ./gradlew sonar --stacktrace -Dorg.gradle.jvmargs=-Xmx4096m

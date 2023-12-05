@@ -196,6 +196,16 @@
     "oss": true,
     "website": "https://backdropcms.org"
   },
+  "Backstretch": {
+    "cats": [
+      25,
+      59
+    ],
+    "description": "A simple jQuery plugin that allows you to add a dynamically-resized, slideshow-capable background image to any page or element.",
+    "oss": true,
+    "scriptSrc": "(?:((?:\\d+\\.)+\\d+)\\/)?(?:jquery\\.)?backstretch(?:\\.min)?\\.js\\;version:\\1",
+    "website": "https://www.jquery-backstretch.com/"
+  },
   "Baidu Analytics (百度统计)": {
     "cats": [
       10
@@ -333,6 +343,15 @@
     },
     "website": "https://tools.ietf.org/html/rfc7617"
   },
+  "Basil.css": {
+    "cats": [
+      66
+    ],
+    "description": "Basil.css is a responsive and customizable UI framework.",
+    "dom": "link[href*='/basil.css'], link[href*='/basilcss']",
+    "icon": "basilcss.svg",
+    "website": "https://basilcss.com"
+  },
   "Basis Technologies": {
     "cats": [
       36
@@ -465,6 +484,36 @@
     "scriptSrc": "cdn\\.trybeans\\.com",
     "website": "https://www.trybeans.com/"
   },
+  "Beehiiv": {
+    "cats": [
+      11
+    ],
+    "description": "Beehiiv is a relatively young, hosted newsletter platform built for businesses and creators.",
+    "dom": "link[href*='media.beehiiv.com/']",
+    "icon": "Beehiiv.svg",
+    "pricing": [
+      "freemium",
+      "low",
+      "recurring"
+    ],
+    "saas": true,
+    "website": "https://www.beehiiv.com"
+  },
+  "Beehiiv RSS feed": {
+    "cats": [
+      49
+    ],
+    "description": "Beehiiv RSS feed is a feature of the Beehiiv. Beehiiv is a relatively young, hosted newsletter platform built for businesses and creators.",
+    "dom": "iframe[src*='embeds.beehiiv.com/']",
+    "icon": "Beehiiv.svg",
+    "pricing": [
+      "freemium",
+      "low",
+      "recurring"
+    ],
+    "saas": true,
+    "website": "https://www.beehiiv.com"
+  },
   "Beeketing": {
     "cats": [
       32
@@ -528,20 +577,20 @@
     "scriptSrc": "/shopify-apps//js/betterprice/betterprice\\.js",
     "website": "https://apps.shopify.com/better-price"
   },
-  "Better Uptime": {
+  "Better Stack": {
     "cats": [
       13
     ],
-    "description": "Better Uptime is the all-in-one infrastructure monitoring platform for your incident management, uptime monitoring, and status pages.",
-    "icon": "Better Uptime.svg",
+    "description": "Better Stack is the all-in-one infrastructure monitoring platform for your incident management, uptime monitoring, and status pages.",
+    "icon": "Better Stack.svg",
     "pricing": [
       "freemium",
       "low",
       "recurring"
     ],
     "saas": true,
-    "scriptSrc": "//betteruptime\\.com/",
-    "website": "https://betterstack.com/better-uptime"
+    "scriptSrc": "//(?:uptime\\.)?(?:betteruptime|betterstack)\\.com/",
+    "website": "https://betterstack.com/uptime"
   },
   "BetterDocs": {
     "cats": [
@@ -657,6 +706,26 @@
     "scripts": "bigcommerceProductId",
     "url": "mybigcommerce\\.com",
     "website": "https://www.bigcommerce.com"
+  },
+  "BigCommerce B2B Edition": {
+    "cats": [
+      6
+    ],
+    "description": "BigCommerce B2B Edition is a specialised version of the BigCommerce ecommerce platform tailored for B2B companies, offering features such as custom pricing, catalogues, bulk ordering, quote requests, multi-user accounts, PO processing, and advanced reporting.",
+    "excludes": "BigCommerce",
+    "icon": "BigCommerce B2B Edition.svg",
+    "js": {
+      "bundleB2BFeatureFlags": "",
+      "bundleb2b.text.tpa": ""
+    },
+    "pricing": [
+      "mid",
+      "recurring"
+    ],
+    "requires": "BigCommerce",
+    "saas": true,
+    "scriptSrc": "cdn\\.bundleb2b\\.net/",
+    "website": "https://www.bundleb2b.com"
   },
   "BigDataCloud IP Geolocation": {
     "cats": [
@@ -1068,6 +1137,22 @@
     "requires": "WordPress",
     "scriptSrc": "/wp-content/themes/blossom-travel(?:-pro)?/.+custom\\.min\\.js(?:\\?ver=(\\d+(?:\\.\\d+)+))?\\;version:\\1",
     "website": "https://blossomthemes.com/wordpress-themes/blossom-travel"
+  },
+  "Blotout EdgeTag": {
+    "cats": [
+      32
+    ],
+    "description": "Blotout EdgeTag is a technology provided by Blotout that tackles the effects of privacy changes on C-API signals by reconstructing signals around a lifetime ID, allowing for real-time remarketing of site visits.",
+    "icon": "Blotout.svg",
+    "js": {
+      "edgetag": "",
+      "edgetagProviders": ""
+    },
+    "pricing": [
+      "recurring"
+    ],
+    "saas": true,
+    "website": "https://blotout.io"
   },
   "Blue": {
     "cats": [
@@ -1598,6 +1683,19 @@
     "scriptSrc": "\\.bookthatapp\\.com/",
     "website": "https://www.bookthatapp.com"
   },
+  "BookVisit": {
+    "cats": [
+      72
+    ],
+    "description": "BookVisit is an IT services and IT consulting, recreation, and hotel company located in Goteborg,Sweden.",
+    "icon": "BookVisit.png",
+    "pricing": [
+      "poa"
+    ],
+    "saas": true,
+    "scriptSrc": "online\\.bookvisit\\.com/",
+    "website": "https://bookvisit.com"
+  },
   "Bookatable": {
     "cats": [
       93
@@ -1763,6 +1861,16 @@
     "requires": "Shopify",
     "scriptSrc": "/assets/booster-page-speed-optimizer\\.js",
     "website": "https://apps.shopify.com/page-speed-optimizer"
+  },
+  "Bootbox.js": {
+    "cats": [
+      59
+    ],
+    "description": "Bootbox.js is a small JavaScript library which allows you to create custom modal dialogs using Bootstrap modals, without having to worry about creating, managing, or removing any of the required DOM elements or JavaScript event handlers.",
+    "icon": "Bootbox.js.png",
+    "oss": true,
+    "scriptSrc": "(?:((?:\\d+\\.)+\\d+)\\/)?bootbox(?:\\.min)?\\.js\\;version:\\1",
+    "website": "https://bootboxjs.com/"
   },
   "Bootic": {
     "cats": [
@@ -2243,6 +2351,23 @@
     "requires": "WordPress",
     "scriptSrc": "/wp-content/plugins/salesforce-wordpress-to-lead/",
     "website": "https://brilliantplugins.com/downloads/salesforce/"
+  },
+  "Brimble": {
+    "cats": [
+      62
+    ],
+    "description": "Brimble is a cloud platform for deploying frontend web applications.",
+    "headers": {
+      "server": "^Brimble$",
+      "x-brimble-id": ""
+    },
+    "icon": "brimble.svg",
+    "pricing": [
+      "freemium",
+      "low",
+      "recurring"
+    ],
+    "website": "https://brimble.io"
   },
   "Broadstreet": {
     "cats": [
@@ -2765,5 +2890,29 @@
     "saas": true,
     "scriptSrc": "cdn\\.ibdok\\.ir/",
     "website": "https://bdok.ir"
+  },
+  "bowser": {
+    "cats": [
+      59
+    ],
+    "description": "A small, fast and rich-API browser/platform/engine detector for both browser and node.",
+    "oss": true,
+    "scriptSrc": "(?:((?:\\d+\\.)+\\d+)\\/)?bowser(?:\\.min)?(?:[-\\.][\\d\\w]{0,64})?\\.js\\;version:\\1",
+    "website": "https://opencollective.com/bowser"
+  },
+  "bxSlider": {
+    "cats": [
+      7,
+      59
+    ],
+    "description": "Add a respsonsive image slider to any website.",
+    "icon": "bxSlider.png",
+    "oss": true,
+    "pricing": [
+      "low",
+      "onetime"
+    ],
+    "scriptSrc": "bxslider(?:\\.min)?\\.js(?:\\?ver=((?:\\d+\\.)+\\d+))?\\;version:\\1",
+    "website": "https://bxslider.com/"
   }
 }

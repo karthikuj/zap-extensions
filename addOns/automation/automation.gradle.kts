@@ -13,7 +13,7 @@ zapAddOn {
         dependencies {
             addOns {
                 register("commonlib") {
-                    version.set(">= 1.13.0 & < 2.0.0")
+                    version.set(">= 1.17.0 & < 2.0.0")
                 }
             }
         }
@@ -34,12 +34,7 @@ crowdin {
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("commonlib")!!)
-    val jacksonVersion = "2.15.2"
-    api("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
-    api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
-    api("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
-    api("org.snakeyaml:snakeyaml-engine:2.6")
-    testImplementation(parent!!.childProjects.get("commonlib")!!)
+    zapAddOn("commonlib")
+
     testImplementation(project(":testutils"))
 }

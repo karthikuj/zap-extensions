@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 ### Changed
+- Update minimum ZAP version to 2.14.0.
+- Move "Jython" under "Scripts > Engine" in the Options panel list.
+
+### Fixed
+- Remove the script engine when the add-on is uninstalled.
+
+## [13] - 2023-09-07
+### Changed
 - Update minimum ZAP version to 2.13.0.
 - Replace usage of singletons with injected variables (e.g. `model`, `control`) in scripts.
 
@@ -83,5 +91,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
+[13]: https://github.com/zaproxy/zap-extensions/releases/jython-v13
 [12]: https://github.com/zaproxy/zap-extensions/releases/jython-v12
 [11]: https://github.com/zaproxy/zap-extensions/releases/jython-v11

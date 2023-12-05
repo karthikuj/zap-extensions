@@ -6,6 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ## Unreleased
 
 
+## [0.21.0] - 2023-11-10
+### Changed
+- Dependency updates.
+- Maintenance changes.
+
+### Fixed
+- The query generator was not using lists and non-null fields to generate queries when the lenient maximum query depth
+  criteria was met.
+
+## [0.20.0] - 2023-10-12
+### Added
+- Fingerprinting check for the Absinthe GraphQL engine.
+
+### Changed
+- Update minimum ZAP version to 2.14.0.
+- Dependency updates.
+
+## [0.19.0] - 2023-09-07
+### Added
+- The add-on now includes example alert functionality for documentation generation purposes (Issue 6119).
+
+### Changed
+- Dependency updates.
+- Maintenance changes.
+- Depend on newer versions of Automation Framework and Common Library add-ons (Related to Issue 7961).
+- Use Common Library add-on to obtain the Value Generator (Issue 8016).
+
 ## [0.18.0] - 2023-07-11
 ### Changed
 - Update minimum ZAP version to 2.13.0.
@@ -146,6 +173,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
   - Import a GraphQL Schema
   - Generate Queries from an imported Schema
 
+[0.21.0]: https://github.com/zaproxy/zap-extensions/releases/graphql-v0.21.0
+[0.20.0]: https://github.com/zaproxy/zap-extensions/releases/graphql-v0.20.0
+[0.19.0]: https://github.com/zaproxy/zap-extensions/releases/graphql-v0.19.0
 [0.18.0]: https://github.com/zaproxy/zap-extensions/releases/graphql-v0.18.0
 [0.17.0]: https://github.com/zaproxy/zap-extensions/releases/graphql-v0.17.0
 [0.16.0]: https://github.com/zaproxy/zap-extensions/releases/graphql-v0.16.0

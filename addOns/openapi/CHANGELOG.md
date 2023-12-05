@@ -4,7 +4,30 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Changed
+- Dependency updates.
 
+## [38] - 2023-10-23
+### Changed
+- Dependency updates.
+
+### Fixed
+- An issue in the headers generator which might lead to content-type header being incorrectly set.
+
+## [37] - 2023-10-12
+### Changed
+- Update minimum ZAP version to 2.14.0.
+
+## [36] - 2023-09-07
+### Changed
+- Dependency updates.
+- The "Import an OpenAPI definition from the local file system" and "Import an OpenAPI definition from a URL" menu items
+  were merged into one, "Import an OpenAPI Definition".
+- Depend on newer versions of Automation Framework and Common Library add-ons (Related to Issue 7961).
+- Use Common Library add-on to obtain the Value Generator (Issue 8016).
+
+### Fixed
+- Importing empty or invalid OpenAPI definitions failed silently in some cases (Issue 7949).
 
 ## [35] - 2023-07-11
 ### Changed
@@ -275,6 +298,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First Version
 
+[38]: https://github.com/zaproxy/zap-extensions/releases/openapi-v38
+[37]: https://github.com/zaproxy/zap-extensions/releases/openapi-v37
+[36]: https://github.com/zaproxy/zap-extensions/releases/openapi-v36
 [35]: https://github.com/zaproxy/zap-extensions/releases/openapi-v35
 [34]: https://github.com/zaproxy/zap-extensions/releases/openapi-v34
 [33]: https://github.com/zaproxy/zap-extensions/releases/openapi-v33

@@ -54,6 +54,8 @@ public class ExtensionJython extends ExtensionAdaptor {
 
     private ExtensionScript extScript = null;
     private JythonOptionsParam jythonOptionsParam;
+    private JythonOptionsPanel jythonOptionsPanel;
+    private JythonEngineWrapper engineWrapper;
 
     public ExtensionJython() {
         super(NAME);
@@ -66,30 +68,46 @@ public class ExtensionJython extends ExtensionAdaptor {
 
         this.jythonOptionsParam = new JythonOptionsParam();
 
-        getExtScript()
-                .registerScriptEngineWrapper(
-                        new JythonEngineWrapper(jythonOptionsParam, new PyScriptEngineFactory()));
+        engineWrapper = new JythonEngineWrapper(jythonOptionsParam, new PyScriptEngineFactory());
+        getExtScript().registerScriptEngineWrapper(engineWrapper);
 
         extensionHook.addOptionsParamSet(this.jythonOptionsParam);
-        if (null != super.getView()) {
-            extensionHook.getHookView().addOptionPanel(new JythonOptionsPanel());
+        if (hasView()) {
+            String[] scriptEngineNode = {
+                Constant.messages.getString("options.script.title"),
+                Constant.messages.getString("scripts.options.engine.title")
+            };
+            getView().getOptionsDialog().addParamPanel(scriptEngineNode, getOptionsPanel(), true);
         }
     }
 
     @Override
     public boolean canUnload() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public void unload() {
+        if (hasView()) {
+            getView().getOptionsDialog().removeParamPanel(getOptionsPanel());
+        }
+
+        getExtScript().removeScriptEngineWrapper(engineWrapper);
     }
 
     private ExtensionScript getExtScript() {
         if (extScript == null) {
             extScript =
-                    (ExtensionScript)
-                            Control.getSingleton()
-                                    .getExtensionLoader()
-                                    .getExtension(ExtensionScript.NAME);
+                    Control.getSingleton().getExtensionLoader().getExtension(ExtensionScript.class);
         }
         return extScript;
+    }
+
+    private JythonOptionsPanel getOptionsPanel() {
+        if (jythonOptionsPanel == null) {
+            jythonOptionsPanel = new JythonOptionsPanel();
+        }
+        return jythonOptionsPanel;
     }
 
     @Override

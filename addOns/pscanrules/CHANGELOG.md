@@ -6,6 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 
+## [53] - 2023-11-30
+### Changed
+- The Application Error Disclosure rule no longer considers responses that contain ISO control characters (those which are likely to be binary file types).
+- The Time Stamp Disclosure rule now includes the header field name as Parameter in alerts when a time stamp is identified in a header value (Issue 8160).
+- Maintenance changes.
+
+## [52] - 2023-10-12
+### Fixed
+- The CSRF Countermeasures scan rule now skips responses that are not HTML (Issue 7890).
+- A potential NullPointerException when a CSP declared via META tag was invalid.
+
+### Changed
+- Update minimum ZAP version to 2.14.0.
+- CSP scan rule: Add deprecation warning for inclusion of prefetch-src (Issue 8077).
+
+## [51] - 2023-09-08
+### Added
+- The following now include example alert functionality for documentation generation purposes (Issue 6119):
+  - Loosely Scoped Cookie scan rule.
+
+### Changed
+- Dependency updates.
+- Maintenance changes.
+- The alerts of the Hash Disclosure scan rule no longer have the evidence duplicated in the Other Info field.
+- Depend on newer version of Common Library add-on.
+- Use vulnerability data directly from Common Library add-on.
+
 ## [50] - 2023-07-11
 ### Added
 - The following now include example alert functionality for documentation generation purposes (Issue 6119):
@@ -415,6 +442,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
+[53]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v53
+[52]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v52
+[51]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v51
 [50]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v50
 [49]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v49
 [48]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v48

@@ -1,4 +1,3 @@
-version = "0.0.1"
 description = "Exposes client (browser) side information in ZAP using Firefox and Chrome extensions."
 
 zapAddOn {
@@ -7,14 +6,29 @@ zapAddOn {
     manifest {
         author.set("ZAP Dev Team")
         url.set("https://www.zaproxy.org/docs/desktop/addons/client-side-integration/")
+        extensions {
+            register("org.zaproxy.addon.client.zest.ExtensionClientZest") {
+                classnames {
+                    allowed.set(listOf("org.zaproxy.addon.client.zest"))
+                }
+                dependencies {
+                    addOns {
+                        register("zest") {
+                            version.set(">=40")
+                        }
+                    }
+                }
+            }
+        }
         dependencies {
             addOns {
                 register("selenium") {
-                    version.set("15.*")
+                    version.set(">=15.14.0")
                 }
                 register("network") {
                     version.set(">=0.8.0")
                 }
+                register("commonlib")
             }
         }
     }
@@ -29,8 +43,10 @@ crowdin {
 }
 
 dependencies {
-    compileOnly(parent!!.childProjects.get("selenium")!!)
-    compileOnly(parent!!.childProjects.get("network")!!)
+    zapAddOn("commonlib")
+    zapAddOn("selenium")
+    zapAddOn("network")
+    zapAddOn("zest")
 
     testImplementation(project(":testutils"))
 }

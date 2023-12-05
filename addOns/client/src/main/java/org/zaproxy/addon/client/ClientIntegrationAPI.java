@@ -25,11 +25,9 @@ import java.util.Locale;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.parosproxy.paros.control.Control;
+import org.parosproxy.paros.network.HttpHeader;
 import org.parosproxy.paros.network.HttpMessage;
 import org.parosproxy.paros.network.HttpRequestHeader;
-import org.zaproxy.addon.network.ExtensionNetwork;
-import org.zaproxy.addon.network.server.ServerInfo;
 import org.zaproxy.zap.extension.api.API;
 import org.zaproxy.zap.extension.api.ApiAction;
 import org.zaproxy.zap.extension.api.ApiException;
@@ -43,9 +41,13 @@ public class ClientIntegrationAPI extends ApiImplementor {
 
     private static final String ACTION_REPORT_OBJECT = "reportObject";
     private static final String ACTION_REPORT_EVENT = "reportEvent";
+    private static final String ACTION_REPORT_ZEST_STATEMENT = "reportZestStatement";
+    private static final String ACTION_REPORT_ZEST_SCRIPT = "reportZestScript";
 
     private static final String PARAM_OBJECT_JSON = "objectJson";
     private static final String PARAM_EVENT_JSON = "eventJson";
+    private static final String PARAM_STATEMENT_JSON = "statementJson";
+    private static final String PARAM_SCRIPT_JSON = "scriptJson";
 
     private static final Logger LOGGER = LogManager.getLogger(ClientIntegrationAPI.class);
 
@@ -57,18 +59,13 @@ public class ClientIntegrationAPI extends ApiImplementor {
         this.extension = extension;
         this.addApiAction(new ApiAction(ACTION_REPORT_OBJECT, new String[] {PARAM_OBJECT_JSON}));
         this.addApiAction(new ApiAction(ACTION_REPORT_EVENT, new String[] {PARAM_EVENT_JSON}));
-
-        ServerInfo serverInfo =
-                Control.getSingleton()
-                        .getExtensionLoader()
-                        .getExtension(ExtensionNetwork.class)
-                        .getMainProxyServerInfo();
+        this.addApiAction(
+                new ApiAction(ACTION_REPORT_ZEST_STATEMENT, new String[] {PARAM_STATEMENT_JSON}));
+        this.addApiAction(
+                new ApiAction(ACTION_REPORT_ZEST_SCRIPT, new String[] {PARAM_SCRIPT_JSON}));
 
         callbackUrl =
-                API.getInstance()
-                        .getCallBackUrl(
-                                this,
-                                "http://" + serverInfo.getAddress() + ":" + serverInfo.getPort());
+                API.getInstance().getCallBackUrl(this, HttpHeader.SCHEME_HTTPS + API.API_DOMAIN);
         LOGGER.debug("Client API callback URL: {}", callbackUrl);
     }
 
@@ -82,41 +79,45 @@ public class ClientIntegrationAPI extends ApiImplementor {
     }
 
     private void handleReportObject(JSONObject json) {
-        ReportedNode rnode = new ReportedNode(json);
+        ReportedElement rnode = new ReportedElement(json);
         if (!"A".equals(rnode.getNodeName())) {
             // Dont add links - they flood the table
             this.extension.addReportedObject(rnode);
         }
         Object url = json.get("url");
         if (url instanceof String) {
-            ThreadUtils.invokeAndWaitHandled(
-                    () -> {
-                        ClientNode node = this.extension.getOrAddClientNode((String) url, false);
-                        ClientSideDetails details = node.getUserObject();
-                        boolean wasVisited = details.isVisited();
-                        ClientSideComponent component = new ClientSideComponent(json);
-                        boolean componentAdded = details.addComponent(component);
-                        if (!wasVisited || componentAdded) {
-                            details.setVisited(true);
-                            this.extension.clientNodeChanged(node);
-                        }
-                        if (component.isStorageEvent()) {
-                            String storageUrl = node.getSite() + component.getTypeForDisplay();
-                            ClientNode storageNode =
-                                    this.extension.getOrAddClientNode(storageUrl, true);
-                            ClientSideDetails storageDetails = storageNode.getUserObject();
-                            storageDetails.setStorage(true);
-                            storageDetails.addComponent(component);
-                            this.extension.clientNodeChanged(storageNode);
-                        }
-                    });
+            String urlStr = (String) url;
+            if (!ExtensionClientIntegration.isApiUrl(urlStr)) {
+                ThreadUtils.invokeAndWaitHandled(
+                        () -> {
+                            ClientNode node =
+                                    this.extension.getOrAddClientNode(urlStr, false, false);
+                            ClientSideDetails details = node.getUserObject();
+                            boolean wasVisited = details.isVisited();
+                            ClientSideComponent component = new ClientSideComponent(json);
+                            boolean componentAdded = details.addComponent(component);
+                            if (!wasVisited || componentAdded) {
+                                details.setVisited(true);
+                                this.extension.clientNodeChanged(node);
+                            }
+                            if (component.isStorageEvent()) {
+                                String storageUrl = node.getSite() + component.getTypeForDisplay();
+                                ClientNode storageNode =
+                                        this.extension.getOrAddClientNode(storageUrl, false, true);
+                                ClientSideDetails storageDetails = storageNode.getUserObject();
+                                storageDetails.setStorage(true);
+                                storageDetails.addComponent(component);
+                                this.extension.clientNodeChanged(storageNode);
+                            }
+                        });
+            }
         } else {
             LOGGER.debug("Not got url:(: {}", url);
         }
         Object href = json.get("href");
         if (href instanceof String && ((String) href).toLowerCase(Locale.ROOT).startsWith("http")) {
             ThreadUtils.invokeAndWaitHandled(
-                    () -> this.extension.getOrAddClientNode((String) href, false));
+                    () -> this.extension.getOrAddClientNode((String) href, false, false));
         }
     }
 
@@ -135,7 +136,30 @@ public class ClientIntegrationAPI extends ApiImplementor {
                 String eventJson = this.getParam(params, PARAM_EVENT_JSON, "");
                 LOGGER.debug("Got event: {}", eventJson);
                 json = JSONObject.fromObject(eventJson);
-                this.extension.addReportedObject(new ReportedEvent(json));
+                ReportedEvent event = new ReportedEvent(json);
+                if (event.getUrl() == null
+                        || !ExtensionClientIntegration.isApiUrl(event.getUrl())) {
+                    this.extension.addReportedObject(event);
+                }
+                break;
+
+            case ACTION_REPORT_ZEST_STATEMENT:
+                String statementJson = this.getParam(params, PARAM_STATEMENT_JSON, "");
+                LOGGER.debug("Got script: {}", statementJson);
+                try {
+                    this.extension.addZestStatement(statementJson);
+                } catch (Exception e) {
+                    LOGGER.debug(e);
+                }
+                break;
+            case ACTION_REPORT_ZEST_SCRIPT:
+                String scriptJson = this.getParam(params, PARAM_SCRIPT_JSON, "");
+                LOGGER.debug("Got script: {}", scriptJson);
+                try {
+                    this.extension.addZestStatement(scriptJson);
+                } catch (Exception e) {
+                    LOGGER.debug(e);
+                }
                 break;
 
             default:
@@ -145,7 +169,7 @@ public class ClientIntegrationAPI extends ApiImplementor {
         return ApiResponseElement.OK;
     }
 
-    static JSONObject decodeParam(String body, String param) {
+    static String decodeParamString(String body, String param) {
         // Should always start with 'param'=
         String str = body.substring(param.length() + 1);
         int apikeyIndex = str.indexOf("&apikey=");
@@ -153,6 +177,11 @@ public class ClientIntegrationAPI extends ApiImplementor {
             str = str.substring(0, apikeyIndex);
         }
         str = URLDecoder.decode(str, StandardCharsets.UTF_8);
+        return str;
+    }
+
+    static JSONObject decodeParam(String body, String param) {
+        String str = decodeParamString(body, param);
         return JSONObject.fromObject(str);
     }
 
@@ -162,11 +191,26 @@ public class ClientIntegrationAPI extends ApiImplementor {
             String body = msg.getRequestBody().toString();
 
             if (body.startsWith(PARAM_OBJECT_JSON + "=")) {
-                handleReportObject(decodeParam(body, PARAM_OBJECT_JSON));
+                JSONObject json = decodeParam(body, PARAM_OBJECT_JSON);
+                LOGGER.debug("Got object: {}", json);
+                handleReportObject(json);
 
             } else if (body.startsWith(PARAM_EVENT_JSON)) {
-                this.extension.addReportedObject(
-                        new ReportedEvent(decodeParam(body, PARAM_EVENT_JSON)));
+                JSONObject json = decodeParam(body, PARAM_EVENT_JSON);
+                LOGGER.debug("Got event: {}", json);
+                this.extension.addReportedObject(new ReportedEvent(json));
+            } else if (body.startsWith(PARAM_STATEMENT_JSON)) {
+                try {
+                    this.extension.addZestStatement(decodeParamString(body, PARAM_STATEMENT_JSON));
+                } catch (Exception e) {
+                    LOGGER.debug(e);
+                }
+            } else if (body.startsWith(PARAM_SCRIPT_JSON)) {
+                try {
+                    this.extension.addZestStatement(decodeParamString(body, PARAM_SCRIPT_JSON));
+                } catch (Exception e) {
+                    LOGGER.debug(e);
+                }
             }
 
         } else {
